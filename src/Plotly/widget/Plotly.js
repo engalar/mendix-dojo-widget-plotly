@@ -1,5 +1,3 @@
-const { executeNanoflow } = require("@jeltemx/mendix-react-widget-utils");
-
 define([
     "dojo/_base/declare",
     "mxui/widget/_WidgetBase",
@@ -23,9 +21,7 @@ define([
 
     return declare("Plotly.widget.Plotly", [_WidgetBase], {
         // Set in Modeler
-        mountNF: "",
-        unmountNF: "",
-        updateNF: "",
+        jsaction: "",
 
         // Internal
         _objectChangeHandler: null,
@@ -33,17 +29,13 @@ define([
 
         postCreate: function () {
             mx.logger.debug(this.id + ".postCreate");
-
-            if (this.mountNF.nanoflow) {
-                this.fireNanoflow(this.mountNF);
-            }
         },
 
         update: function (obj, callback) {
             mx.logger.debug(this.id + ".update");
             this.contextObj = obj;
             if (this.updateNF.nanoflow) {
-                this.fireNanoflow(this.updateNF).then(() => this._executeCallback(callback, "update"), () => this._executeCallback(callback, "update"));
+                this.fireNanoflow(this.contextObj, this.domNode, 'update').then(() => this._executeCallback(callback, "update"), () => this._executeCallback(callback, "update"));
             } else {
                 this._executeCallback(callback, "update");
             }
@@ -60,13 +52,14 @@ define([
             );
         },
 
-        fireNanoflow: async function (flow) {
-            /*             dojoDynamicRequire([`${mx.appUrl}jsactions.js`], n=>{
-                                    const i = n['DataAnalysisV2$RenderPie'.replace(".", "$")];
-               i().then(k=>console.log(k))
-                                    
-                                }); */
-            await executeNanoflow(flow, this.mxcontext, this.mxform);
+        fireNanoflow: async function (obj, container, stage) {
+            await new Promise((resolve, reject) => {
+                dojoDynamicRequire([`${mx.appUrl}jsactions.js`], n => {
+                    const i = n[this.jsaction.replace(".", "$")];
+                    if (!i) reject();
+                    i().then(k => k(obj, container, stage), reject)
+                });
+            });
         },
 
         _executeCallback: function (cb, from) {

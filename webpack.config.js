@@ -12,7 +12,6 @@ const widgetVersion = package.version;
  module.exports = {
     entry: {
         [widgetName]: [ "core-js/es/promise", `./src/${widgetName}/widget/${widgetName}.js` ],
-        [widgetNameContext]: [ "core-js/es/promise", `./src/${widgetName}/widget/${widgetNameContext}.js` ],
     },
     output: {
         path: path.resolve(__dirname, "dist/tmp/src"),
