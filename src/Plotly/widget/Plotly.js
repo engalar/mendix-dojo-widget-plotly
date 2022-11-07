@@ -34,11 +34,7 @@ define([
         update: function (obj, callback) {
             mx.logger.debug(this.id + ".update");
             this.contextObj = obj;
-            if (this.updateNF.nanoflow) {
-                this.fireNanoflow(this.contextObj, this.domNode, 'update').then(() => this._executeCallback(callback, "update"), () => this._executeCallback(callback, "update"));
-            } else {
-                this._executeCallback(callback, "update");
-            }
+            this.fireNanoflow(this.contextObj, this.domNode, 'update').then(() => this._executeCallback(callback, "update"), () => this._executeCallback(callback, "update"));
         },
 
         _handleError: function (error) {
@@ -57,7 +53,7 @@ define([
                 dojoDynamicRequire([`${mx.appUrl}jsactions.js`], n => {
                     const i = n[this.jsaction.replace(".", "$")];
                     if (!i) reject();
-                    i().then(k => k(obj, container, stage), reject)
+                    i().then(k => k(obj, container, stage).then(resolve), reject)
                 });
             });
         },
