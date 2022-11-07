@@ -1,0 +1,34 @@
+{
+    "name": "DojoSnippet",
+    "version": "3.9.7",
+    "description": "",
+    "license": "",
+    "author": "",
+    "private": true,
+    "dependencies": {
+        "core-js": "^3.2.1",
+        "@jeltemx/mendix-react-widget-utils": "^0.9.0",
+        "jquery": "~3.5.1"
+    },
+    "devDependencies": {
+        "clean-webpack-plugin": "^3.0.0",
+        "copy-webpack-plugin": "^5.0.4",
+        "webpack": "^4.39.3",
+        "webpack-cli": "^3.3.7",
+        "webpack-dev-server": "^3.8.0",
+        "webpack-merge": "^4.2.2",
+        "zip-webpack-plugin": "^3.0.0"
+    },
+    "engines": {
+        "node": ">=5"
+    },
+    "generatorVersion": "2.0.1",
+    "paths": {
+        "testProjectFolder": "./test/",
+        "testProjectFileName": "Test.mpr"
+    },
+    "scripts": {
+        "dev": "webpack --config=webpack.config.dev.js",
+        "build": "webpack"
+    }
+}

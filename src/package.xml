@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://www.mendix.com/package/1.0/">
+    <clientModule name="DojoSnippet" version="3.9.7" xmlns="http://www.mendix.com/clientModule/1.0/">
+        <widgetFiles>
+            <widgetFile path="DojoSnippet/DojoSnippet.xml"/>
+            <widgetFile path="DojoSnippet/DojoSnippetContext.xml"/>
+        </widgetFiles>
+        <files>
+            <file path="DojoSnippet/widget/"/>
+        </files>
+    </clientModule>
+</package>
