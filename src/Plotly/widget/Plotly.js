@@ -21,7 +21,7 @@ define([
 ) {
     "use strict";
 
-    return declare("DojoSnippet.widget.DojoSnippet", [_WidgetBase], {
+    return declare("Plotly.widget.Plotly", [_WidgetBase], {
         // Set in Modeler
         mountNF: "",
         unmountNF: "",
@@ -61,6 +61,11 @@ define([
         },
 
         fireNanoflow: async function (flow) {
+            /*             dojoDynamicRequire([`${mx.appUrl}jsactions.js`], n=>{
+                                    const i = n['DataAnalysisV2$RenderPie'.replace(".", "$")];
+               i().then(k=>console.log(k))
+                                    
+                                }); */
             await executeNanoflow(flow, this.mxcontext, this.mxform);
         },
 
