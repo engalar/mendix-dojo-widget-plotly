@@ -21,7 +21,8 @@ define([
 
     return declare("Plotly.widget.Plotly", [_WidgetBase], {
         // Set in Modeler
-        jsaction: "",
+        containerId: "",
+        nf: "",
 
         // Internal
         _objectChangeHandler: null,
@@ -34,7 +35,7 @@ define([
         update: function (obj, callback) {
             mx.logger.debug(this.id + ".update");
             this.contextObj = obj;
-            this.fireNanoflow(this.contextObj, this.domNode, 'update').then(() => this._executeCallback(callback, "update"), () => this._executeCallback(callback, "update"));
+            this.fireNanoflow().then(callback, callback);
         },
 
         _handleError: function (error) {
@@ -48,21 +49,25 @@ define([
             );
         },
 
-        fireNanoflow: async function (obj, container, stage) {
+        fireNanoflow: async function () {
             await new Promise((resolve, reject) => {
-                dojoDynamicRequire([`${mx.appUrl}jsactions.js`], n => {
-                    const i = n[this.jsaction.replace(".", "$")];
-                    if (!i) reject();
-                    i().then(k => k(obj, container, stage).then(resolve), reject)
+
+                this.mxcontext.trackObject.set(this.containerId, this.id);
+                mx.data.callNanoflow({
+                    nanoflow: this.nf,
+                    origin: this.mxform,
+                    context: this.mxcontext,
+                    callback: function (result) {
+                        resolve(result)
+                    },
+                    error: function (error) {
+                        reject(error)
+                    }
                 });
+
+
             });
         },
 
-        _executeCallback: function (cb, from) {
-            mx.logger.debug(this.id + "._executeCallback" + (from ? " from " + from : ""));
-            if (cb && typeof cb === "function") {
-                cb();
-            }
-        }
     });
 });
