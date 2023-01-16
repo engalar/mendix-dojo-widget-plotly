@@ -1,0 +1,40 @@
+name: NodeJS with Webpack
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [14.x]
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+    - name: Get package info
+      id: package
+      uses: codex-team/action-nodejs-package-info@v1
+    - name: Build
+      run: |
+        npm install
+        npx webpack
+        
+    - name: "Release MPK Files"
+      uses: marvinpinto/action-automatic-releases@v1.2.1
+      with:
+         repo_token: "${{ secrets.GITHUB_TOKEN }}"
+         automatic_release_tag: "${{ steps.package.outputs.name }}-v${{ steps.package.outputs.version }}"
+         prerelease: false
+         title: "${{ steps.package.outputs.name }}"
+         files: |
+              dist/**/*.mpk
