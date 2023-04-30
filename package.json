@@ -30,6 +30,7 @@
     },
     "scripts": {
         "dev": "cross-env NODE_OPTIONS='--openssl-legacy-provider' webpack --config=webpack.config.dev.js",
-        "build": "cross-env NODE_OPTIONS='--openssl-legacy-provider' webpack"
+        "build": "cross-env NODE_OPTIONS='--openssl-legacy-provider' webpack",
+        "cp": "cmd /c copy /Y \"dist\\4.0.0\\Plotly.mpk\" \"..\\DiscountAutomation-main\\widgets\\Plotly.mpk\""
     }
 }
